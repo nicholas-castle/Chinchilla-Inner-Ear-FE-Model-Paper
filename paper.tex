@@ -34,7 +34,7 @@
 \makeatother
 
 
-\title{\textbf{3D Finite Element Model of the Chinchilla Inner Ear for Analysis of Multisystemic Pathologies}}
+\title{\textbf{3D Multisystemic Finite Element Model of the Chinchilla Inner Ear}}
 \author{Nicholas Castle$^1$ \and Junfeng Liang$^1$\and Ke Zhang$^2$\and Chenkai Dai$^{12}$}
 \institute{$^1$School of Aerospace and Mechanical Engineering \\ $^2$Stephenson School of Biomedical Engineering \\ University of Oklahoma, Norman OK 73019}
 
@@ -161,11 +161,13 @@ Mechanical properties of the cupula are scarcely reported in literature. Grant a
 Aside from the RWM, a density of 1000 kg/m3 was chosen for the soft tissues of the inner ear. Considering the higher elastic modulus of the chinchilla RWM, the RWM may have a higher proportion of fibers than those of other inner ear soft tissues. The density of the RWM was assumed to be 1500 kg/m3, which is the same as that of the human RWM reported by Bronzino et al. (2000). To our best knowledge, there is no published description of inner ear bone density for chinchillas. In the human cochlea model described in Gan’s paper (Gan et al., 2007), the density of all solid structures was assumed to be 1200 kg/m3. Wang et al also concluded that the density of chinchilla bones is lower than that of humans (Wang et al., 2016). To simplify this problem, 1200 kg/m3 was used as the density and 14.1 GPa as the Young’s modulus for the BM support bones following what been formerly used in the human cochlea model reported by Wang et al.
 
 Edit this as the model is completed and material properties are applied
+Include a large table of all material properties and their origins
 
 
 \subsection{Boundary Conditions}
 The outer boundaries of the mechanical model lie at the division between the perilymphatic fluid of the inner ear and the bony labyrinth. This was modeled as fixed due to the relatively small amount of information available on chinchilla temporal bone material properties. Each surface between lymphatic fluid and a movable structure, such as the BM, RM and RWM, was defined in the model as a fluid-structure interface (FSI) where the acoustic pressure was coupled into structural analysis. For harmonic acoustic simulation the oval window membrane was subjected to XXXX (reference Junfeng's model to figure out what to do for analysis here). The vestibular response of the model was tested with X angular acceleration with displacement tracked for each cupula and x linear acceleration with displacement tracked for the vestibular maculae.
 
+-Get help from Junfeng on this part, not sure what else to include here
 
 
 \section{Results}
@@ -179,25 +181,24 @@ Figure \ref{bonenerve} shows the course the facial nerve takes through the tempo
 \subsection{FE Analysis}
 NEED \newline - Graph from FE analysis like seen in Junfengs paper
 - Maybe a figure showing the allocation of material properties by color
+- Will have graphs/images for each trial, acoustic harmonic and 2 accelerations
+- Reference Junfeng and Gans papers to word and report important values
+- Get Junfengs help on this part
 
 
 
 \section{Discussion}\label{discussion}
 This study features a finite element model constructed by coregistering $\mu$CT and $\mu$MRI scans of the chinchilla bulla. The chinchilla was chosen as the basis for this FE model as it is widely accepted as one of the closest analogs to the human inner ear due to its similar number of turns in the cochlea, structure of semicircular canals, and singular primary crista. \cite{trevino:chinchmodel} The chinchilla is perhaps a better candidate than other rodents, especially microtype varieties, as evidenced in figure \ref{response2} which shows the cochlear response of a variety of rodents and is easily compared to figure \ref{response} displaying human and chinchilla cochlear response. Only the gerbil and chinchilla exhibit the desired response and range from and in frequency. \cite{mason}
 
-   The greatest effect of the vestibular system and cochlea on the other can be predictably seen at the base of the cochlea and the utricular and saccular vestibules as they are the closest in proximity to one another.  Studies with rodents have confirmed this effect \cite{mizrachi}
+Because the saccule is linked to the cochlear duct, propagation of waves due to angular motion of the SCC’s can cause perturbations of the base of the cochlea resulting in sensible alterations in hearing, with intense noises capable of producing a similar effect in the vestibular system. For this reason, it is vital that the membranous labyrinth be modeled in its entirety, linking the saccule and the ductus cochlearis with the canalus reuniens and allowing for analysis of their effects on one another. The greatest effect of the vestibular system and cochlea on the other can be predictably seen at the base of the cochlea and the utricular and saccular vestibules as they are the closest in proximity to one another. INSERT SOME REFERENCES TO OUR DATA HERE.  Studies with rodents have confirmed this effect \cite{mizrachi}
 
-Geometric accuracy of the vestibular system and cochlea will allow for studies into the effects of numerous diseases of the inner ear by varying geometry and applying further inverse finite element analysis to compare with data recieved from both human and chinchilla tests subjects. These studies can include the effects of otitis media, inflammation of inner ear tissues, and genetic abnormalities.
+DISCUSSION ON RESULTS FROM MACULAE, CUPULAS
 
+Geometric accuracy of the vestibular system and cochlea will allow for studies into the effects of numerous diseases of the inner ear by varying geometry and applying further inverse finite element analysis to compare with data recieved from both human and chinchilla tests subjects. These studies can include the effects of otitis media, inflammation of inner ear tissues, and genetic abnormalities. Completed nerve, temporal bone, and auditory cortex geometries can be substituted into the model as needed later to allow for analysis of multisystemic pathologies which are the result of both mechanical and electrical malfunctions in the ear. The accuracy of geometry in nervous tissue will allow for studies on the effect of procedures or implants on nerve function. One example is that of the installation of a cochlear implant, where electrodes could be optimized through reverse analysis of the finite element model and allow for new technologies which minimize the effect on face or tongue feeling. Inclusion of the temporal bone will allow for studies on the effects of concussive blasts and provide an opportunity for analysis of the inner ear in its damaged state.
 
+This model is also capable of being attached to a developed model of the chinchilla middle and outer ear. After the behaviour of this inner ear model is concretely known the middle ear transfer function in various scenarious can be recorded to aid clinical diagnosis of ear disorders.
 
- Because the saccule is linked to the cochlear duct, propagation of waves due to angular motion of the SCC’s can cause perturbations of the base of the cochlea resulting in sensible alterations in hearing, with intense noises capable of producing a similar effect in the vestibular system. For this reason, it is vital that the membranous labyrinth be modeled in its entirety, linking the saccule and the ductus cochlearis with the canalus reuniens and allowing for analysis of their effects on one another.
-   
-
-Completed nerve, temporal bone, and auditory cortex geometries can be substituted into the model as needed later to allow for analysis of multisystemic pathologies which are the result of both mechanical and electrical malfunctions in the ear. The accuracy of geometry in nervous tissue will allow for studies on the effect of procedures or implants on nerve function. One example is that of the installation of a cochlear implant, where electrodes could be optimized through reverse analysis of the finite element model and allow for new technologies which minimize the effect on face or tongue feeling.
-
-
-Some features that are important for vestibulocochlear function have been omitted and their inclusion could improve results in the future. These include the finer details of the organ of corti, the ductus cochlearis, the tectorial membrane and reticular lamina. These features would allow for more accurate analysis of the mechanics of the basilar membrane. Another valuable addition would be the involvment of a seperate finite element model representing a sensory hair cell. This would make transient analysis of multisystemic pathologies feasible by translating deflection from the mechanical model into electrical impulses which could be studied in the electrical model. \cite{choi} Inclusion of the temporal bone will allow for studies on the effects of concussive blasts and provide an opportunity for analysis of the inner ear in its damaged state. The direct relationship between hearing and balance has been found to be significant JUNFENG PAPER and is one that merits further study.
+Some features that are important for vestibulocochlear function have been omitted and their inclusion could improve results in the future. Imaging was unable to capture the proper thicknesses of many membranes on its own. This could be improved using histology, OCR scanning technology, and mechanical testing of excised tissues from recently diceased animal specimens to ensure the proper elasticity and water content of the tissue. Another valuable addition would be the involvement of a seperate finite element model representing a sensory hair cell. This would make transient analysis of multisystemic pathologies feasible by translating deflection from the mechanical model into electrical impulses which could be studied in the electrical model. \cite{choi} 
 
 what would I add
 - nerves for electrical simulation
