@@ -59,25 +59,17 @@ E-mail: Chenkaidai@ou.edu \newline
 
 
 \begin{abstract}
-The mammalian inner ear consists of the cochlea and vestibular systems. These systems act as biomechanical sensors responsible for converting acoustic waves, linear translation, and angular motion experienced by the head into sensible impulses encoded in 3D space. This is accomplished principally in the membranous labyrinth, a system of endolymphatic filled chambers composed of the three semicircular canals, the saccule, and the utricle of the vestibular system as well as the scala media of the cochlea. This interconnected system is contained within a layer of perilymphatic fluid whose osseous outer boundary is known as the bony labyrinth. The cochlear, vestibular, and facial nerves are the primary functional and proximal nerves of the inner ear and interface with the brainstem. Accurate modeling of this delicate region is difficult but is attempted in this paper through the use of $\mu$MRI and $\mu$CT scanning technology, segmentation algorithms for images, removal of artifacts from and smoothing of resultant surface meshes, and reconstruction of the membranous labyrinth using structural queues coupled with literature research. A functional mechanical model is presented as a first step towards a model capable of both mechanical and electrical analysis. \newline \newline \textbf{Keywords:} inner ear, vestibular, cochlea, chinchilla, labyrinth, finite element, mechanics
+The mammalian inner ear consists of the cochlea and vestibular systems. These systems act as biomechanical sensors responsible for converting acoustic waves, linear translation, and angular motion experienced by the head into sensible impulses encoded in 3D space. This paper presents current progress towards a 3D FE model of the chinchilla inner ear capable of both mechanical and electrical analysis. This includes a functional mechanical model of the inner ear with displacement evaluable at the basilar membrane, cupulas, and vestibular maculae. Geometric results of modeling the cochlear, vestibular, and facial nerves are also presented. Accurate modeling of this region is accomplished through the use of $\mu$MRI and $\mu$CT scanning technology with details verified by literature research. This follows a protocol for rapid modeling which is presented here in its current form. Results from harmonic acoustic simulation and simulation of both linear and angular acceleration are shown and compared with those received from clinical studies to verify the models integrity. \newline \newline \textbf{Keywords:} inner ear, vestibular, cochlea, chinchilla, labyrinth, finite element, mechanics
 \end{abstract}
 
 
 \section{Introduction}
-\subsection{Anatomy and Physiology of the Mammalian Inner Ear}
 The general morphology of the inner ear is constant among most mammals and is the result of millions of years of evolution. \cite{ekdale:chinchanat} The cochlea and vestibular system, its primary sensory organs, provide the senses of hearing and balance by detecting the movement of endolymphatic fluid through an interconnected series of lumens called the membranous labyrinth using sensory hair cells. An accurate representation of the structures which support or otherwise effect the mechanical and electrical function of these organs is key to developing a finite element model of the mammalian inner ear which can accurately simulate sound transmission and balance function for both typical ears and ears with various pathologies. 
-	    
-   Numerous finite element models have been created however they are typically restricted to mechanical simulation and focus on either the cochlea or vestibular system in isolation.
-   
-    For example, sensorineural hearing loss commonly presents alongside impairments in balance and loss of vestibular function often sees delays in major gross motor milestones in young children. \cite{cushing}
-   
-   It is also notable that the vestibular and cochlear nerves unify into a singular bundle which connects to the brain, itself running tangent to the facial nerve. It is thought that this proximity is the cause of many complications in cochlear implantations, including but not limited to facial numbness and hearing loss experienced after operation. (Miwa et al., 2019)
-   
-   Because the saccule is linked to the cochlear duct, propagation of waves due to angular motion of the SCC’s can cause perturbations of the base of the cochlea resulting in sensible alterations in hearing, with intense noises capable of producing a similar effect in the vestibular system. For this reason, it is vital that the membranous labyrinth be modeled in its entirety, linking the saccule and the ductus cochlearis with the canalus reuniens and allowing for analysis of their effects on one another.
-   
-   The greatest effect of each system on the other can be predictably seen at the base of the cochlea and the utricular and saccular vestibules as they are the closest in proximity to one another.  Studies with rodents have confirmed this effect \cite{mizrachi}
-   
-  Mechanical finite element models of the inner ear frequently simplify the structures of the inner ear to basic geometric shapes like a cone in the case of the cochlea or a singular large vestibule representing both the saccule and vestibule in the case of the vestibular system. This eases the process of modeling given the complexity of the inner ears topology and allows easy reproduction of study results. However simplification to basic geometric shapes makes it much more difficult to analyze the electrical aspect of hearing and balance because the geometric relationship between tissues is the most important aspect for simulation. By coreferencing $\mu$MRI and $\mu$CT scans it becomes possible to create a finite element model capable of conducting both mechanical and electrical analysis, paving the way for studies which can diagnose both sensorinueral and mechanical causes of hearing loss.
+
+The codependant relationship of the vestibular system and cochlea is well documented. For example, sensorineural hearing loss commonly presents alongside impairments in balance and loss of vestibular function often sees delays in major gross motor milestones in young children. \cite{cushing} A number of FE models have been constructed of the inner ear, typically focusing on either the cochlea, vestibular system, or vestibulocochlear nerve. De Paolis et al.’ study (2017) detailed a 3D human cochlea model based on microCT imaging made for studying perilymph hydrodynamics. Elliott et al. Zhang and Gans made a model complete with coiled cochlea, middle ear, and ear canal (Zhang et al., 2011). The majority of fe models made of the vestibular system focus singularly on the pressures around or sensorinueral reactions of the cupulas,(Yu et al., 2018; Zdravkovic et al., 2017, Hedjoudje et al., 2019; Schier et al., 2018) Many of these studies simplify the complex geometry of the cochlea and vestibular system into geometric shapes for mechanical analysis. This can be valuable as it allows for easy reproduction of results however it does not allow for accurate transient or electrical analysis, both relying heavily upon the topology of the model for calculations. In a clinical setting this difference can be seen in the unforeseen effects of cochlear implants, including facial numbness and hearing/balance loss, due in part to the proximity of the vestibulocochlear nerve to the facial nerve. (Miwa et al., 2019)
+
+
+This study focuses on obtaining a 3D finite element model of the chinchilla membranous labyrinth, bony labyrinth, cochlea, brain, temporal bone and related vestibular, cochlear, and facial nerve pathways. By coreferencing $\mu$MRI and $\mu$CT scans to detect soft and osseous tissues it becomes possible to create a model capable of conducting both mechanical and electrical analysis, the first step toward fe modeling which can analyze both sensorinueral and mechanical causes of hearing loss. The mechanical model will be completed first and compared to expected response curves (cite) to demonstrate its initial validity.
    
 %   The innermost lumens of the cochlea and vestibular system are part of a network of lymphatic fluid filled chambers called the membranous labyrinth. This includes the scala media of the cochlea, and the utricular vestibule, saccular vestibule, and three semcicircular canals  (SCC’s) of the vestibular system. The membranous labyrinth contains endolymphatic fluid whose movement stimulates the sensory hair cells in both systems generating the sensible electronic impulses sent to the brain which represent hearing and balance. These lumens are invariably surrounded by a layer of perilymphatic fluid whose outer boundary is the bony labyrinth, primarily consisting of osseous tissue as the name implies. In both systems this fluid plays a vital role in dampening the noise in vibrations received from the inner ear and angular motion of the head. This provides a sort of dampening effect and ensures that normal movement results in minimal effect on the hearing and balance of vertebrates. This is especially important in the case of the cochlea as even small ambient changes in osmolality and pressure can result in permanent hearing loss, tinnitus, and vertigo.
 %-keep
@@ -98,45 +90,34 @@ The general morphology of the inner ear is constant among most mammals and is th
 %The cupulas, spanning the breadths and heights of the ampullas, are anchored at their bases to the outer membrane of the membranous labyrinth where the branches of the vestibular nerve attach. This region is known as the crista and is visible as a small ridge in the model. Hair cells rise from this point up into the cupula and are excited by stimuli according to their angle of deflection due to mechotransduction of endolymphatic movement. These hair cells are much longer than those found in the cochlea to increase sensitivity to small movements. This results in sensible electronic impulses sent through the attached branches of the vestibular nerve to the brain stem. \cite{rabbitt}
 %-shorten?
 
-\subsection{Codependence of the Cochlea and Vestibular System}
-Oftentimes the cochlea and vestibular system are modeled independently however recent studies have shown that these two systems are codependent. 
--Keep, move some to limitations section
+
+%Oftentimes the cochlea and vestibular system are modeled independently however recent studies have shown that these two systems are codependent. 
+%-Keep, move some to limitations section
+%
+%
+%-keep, use a reference for anatomy
+%
+%
+%-keep
+%
+%
+%
+%
+%
+%
+%
+%-Junfeng- \newline
+%
+%-Junfeng-
+%ADD
+%- Main limitations
+%- Current models don't use both the cochlea and vestibular system
+%- Can I reference Junfengs paper (not necessarily on this topic), will it be published soon?
+%- Focus on geometric limitations because we are only using basic simulations
+%-
 
 
--keep, use a reference for anatomy
 
-
--keep
-
-\subsection{Relationship Between Human and Chinchilla Inner Ear Mechanics}
-Testing on humans is not feasible due to the necessity for certain procedures, including electrical stimulation, which would be unethical to perform on human test subjects. Another alternative which would perhaps allow more easily transferable data would be primates however, due to limited resources coupled with this projects early stage in research, it is difficult and unethical to subject them to invasive procedures which are often easier to carry out on rodents.
-
-This study features a finite element model constructed by coregistering $\mu$CT and $\mu$MRI scans of the chinchilla bulla. The chinchilla was chosen as the basis for this FE model as it is widely accepted as one of the closest analogs to the human inner ear due to its similar number of turns in the cochlea, structure of semicircular canals, and singular primary crista. \cite{trevino:chinchmodel} The chinchilla is perhaps a better candidate than other rodents, especially microtype varieties, as evidenced in figure \ref{response2} which shows the cochlear response of a variety of rodents and is easily compared to figure \ref{response} displaying human and chinchilla cochlear response. Only the gerbil and chinchilla exhibit the desired response and range from and in frequency. \cite{mason}
-- shorten, maybe combine this with limitations section and rename
-
-Animal testing data is an integral part of the process converting data obtained from animals for use in humans. By creating a geometric model which matches that of a chinchilla inner ear individual tissues can be tweaked until response of the model to mirror that of the animal subject, providing validation or new information on the material properties of the inner ear. The data obtained from the animal subjects and model can be compared to that of human subjects as seen in figure \ref{response}. Data from the model can then be normalized and calibrated using the generally constant relationship in cochlear response between humans and mammalian subjects, in this case the chinchilla. This method will allow for a future human inner ear model which is calibrated and is confirmed in accuracy through additional human testing.
-- keep most, shorten a little
-- create own response curves like seen in response and response2
-
-\subsection{Limitations of Current Models}
--Junfeng- \newline
-Several FE models have so far investigated the hydrodynamics in the cochlea. Edom et al. (2013) studied the effect of a piston like or rocking stapes motion on the cochlear fluid flow and the BM motion in a 2D box model of the cochlea. In De Paolis et al.’ study (2017), a detailed 3D microCT-based human cochlea model of the perilymph hydrodynamics was investigated. Elliott et al. (2013) decomposed the full BM responses of both passive and active cochlear models in terms of wave components. Zhang and Gan developed a highly realistic model with a coiled cochlea coupled with the middle-ear and ear canal, with viscoelastic material properties implemented for the middle-ear soft tissue (Zhang et al., 2011). Meanwhile, vestibular system is also studied with FE simulation either focus on the hydro-dynamics of the endonym (Iversen et al., 2018; Karimi et al., 2017; Santos et al., 2017; Shen et al., 2013), pressure on cupula (Baumgartner et al., 2018; Selva et al., 2010; Yu et al., 2018; Zdravkovic et al., 2017) or the senorineaural response of cupula (Hayden et al., 2011; Hedjoudje et al., 2019; Schier et al., 2018). Albeit numerous simulation studies on cochlear or semicircular canal exists, to date, very few inner FE models include both parts of the inner ear. \newline
--Junfeng-
-ADD
-- Main limitations
-- Current models don't use both the cochlea and vestibular system
-- Can I reference Junfengs paper (not necessarily on this topic), will it be published soon?
-- Focus on geometric limitations because we are only using basic simulations
--
-
-
-\subsection{Strategy of the Study (change later)}
-This study focuses on obtaining an organic, 3D model of the chinchilla membranous labyrinth, bony labyrinth, cochlea, brain, temporal bone and related vestibular, cochlear, and facial nerve pathways. Geometry was generated through the use of $\mu$MRI and $\mu$CT scans acquired at X and Y voxel size, respectively. Segmentation 
-- Reference literature Dr. Dai gave me to write this, this probably shouldn't be its own subsection but good for putting down thoughts
--  MicroMRI and CT data
--  Basic strategy of segmentation
--  Data sources for reconstruction of structures obscured by artifacts
--  Inlcude references that set precident for FE simulation, maybe Junfengs paper?
 
 \section{Methods}
 \subsection{Data Source}
@@ -145,36 +126,19 @@ Model geometry was generated through 3D reconstruction of ultra-high resolution 
 Figure \ref{segment2} shows a representative MRI image in the frontal plane where all major features are labeled and visible, illustrating the complexity of the mammalian inner ear due to its many intertwining nerves and small separation between wave conducting volumes. Notable inclusions are the facial nerve, cochlear nerve, and vestibular nerve.
 
 Figure \ref{ctsegment} shows a CT image segmented in the frontal plane with notable features annotated. These include the vestibular lumen, superior SCC and its ampulla, and the assumed location of the endomlyphatic sac due to a divot in the temporal bone in the opproximate location seen in humans.\cite{ensac}
--Work on this one
--Keep all
 
-\subsection{Boundary Conditions}
-The displacement boundaries of the inner ear consisted of the cochlea, the vestibule and the SCC outer wall, were fixed at all degree of freedoms. Two types of fluid–structure interactions were defined in the acoustic elements of the cochlea and vestibular system. Each surface between the lymphatic fluid and a movable structure, such as the BM, RM and RWM, was defined in the model as a fluid-structure interface (FSI) where the acoustic pressure was coupled into structural analysis. (copied from Junfeng, will alter for final paper)
-- Is this section necessary?
-- Check if this is even accurate
 
--Keep the rest of the procedure for now
 \subsection{Segmentation}
-The structure of the chinchilla bulla was segmented using a program called 3D Slicer, allowing for each different tissue to be isolated using their varying densities in the $\mu$CT and $\mu$MRI scans. \cite{slicer} This was accomplished by selecting a small portion of each tissue structure which differentiated it from surrounding areas and using a seeding algorithm to expand that selection to encompass the entirety of the structure using a chosen sensitivity based on differences in tissue densities.
-
-
-This process was repeated for each image in the received $\mu$MRI and $\mu$CT data, with small abnormalities corrected through visual inspected and an additional tool allowing the borders of tissues to be directly highlighted and tissue selections to be expanded up to that border. This resulted in the distinct regions denoting varying tissues seen in Figures \ref{segment2} and \ref{ctsegment}.
+The structure of the chinchilla bulla was segmented using a program called 3D Slicer. \cite{slicer} This was accomplished principally by using a seeding algorithm to expand small selections based on differences in surrounding tissue densities. This process was repeated for each image in the received $\mu$MRI and $\mu$CT data. This resulted in the distinct regions denoting varying tissues seen in Figures \ref{segment2} and \ref{ctsegment}.
 
 Nervous tissue proved the most difficult to accurately select, however clear divisions between osseous, epithelial, and nervous tissues could still be seen in many images. The appearance of tissues was brightened significantly in the intervening images allowing for accurate outlines of nerves to be reconstructed.
 
-\subsection{Smoothing and Refinement}
-As imaging can never capture a complete 3D representation of the studied tissue due to granularity in sampling it was necessary to generate the structure of each tissue lying between the captured images, accomplished using an algorithm native to the 3D Slicer program. \cite{slicer} The end result of this process was a point cloud representative of each tissue structure with no lines connecting the registered points. This could be viewed in 3D space during the segmentation process allowing a full picture of the effect alterations had on the overall structure. These point clouds provided a mostly accurate 3D representation of the imaging, including the inner boundary of the bony labyrinth that surrounds the cochlea, vestibular system, and intervening structures. Additionally, the point clouds included the proximal portion of the brain, the nervous system consisting of the cochlear, vestibular, and facial nerves from $\mu$MRI imaging, as well as the proximal and surrounding portion of the temporal bone through use of $\mu$CT imaging. Each of these was captured as a different point cloud allowing individual refinement and reconstruction of missing structures, notably the vestibular portion of the membranous labyrinth.
+The intervening space between each captured imaged was interpolated using an algorithm native to the 3D Slicer program yielding a full 3D point cloud capable of being turned into a modifiable .stl file. \cite{slicer} This could be viewed and modified in 3D space during the segmentation process allowing easy removal of artifacts and quick visual verification of operations.
 
-
-
-The point cloud obtained from $\mu$MRI imaging was exported as a surface mesh which was imported into MeshMixer for smoothing and reconstruction of the outer surfaces as well as construction of the membranous labyrinth based on extrapolation of the imported data. Artifacts which resulted in additional unattached structures were removed leaving only the desired anatomy in place. 
-
-The SSC’s exhibited small gaps after removal of the largest artifacts, though the majority of the SCC’s retained accurate diameters and paths through 3D space. These gaps were repaired by adding short cylindrical sections into the workspace and fusing them with existing tissue models. Surfaces were smoothed using a robust smoothing tool in MeshMixer which retains the maximal amount of the original structure while removing small abnormalities. This tool is effective for both concave and convex artifacts including tubes. 
-
-Some portions of the bony labyrinth bounding the cochlea were imported with small intersections between consecutive revolutions of its structure, a problem resolved by deleting the offending elements and replacing the joined area with distinct surfaces. The curvature of these portions were matched to that of the surrounding structure.
+The point clouds obtained from $\mu$MRI imaging were imported as .stl files into MeshMixer for smoothing of the outer surfaces as well as construction of the membranous labyrinth based on extrapolation of the imported data. Artifacts which resulted in additional unattached structures were removed leaving only the desired anatomy in place. Holes and gaps in the semicircular canals and cochlea were repaired manually to ensure proper connectivity between surfaces. Curvatures of repaired sections were matched to that of surrounding surfaces using tools native to the MeshMixer program.
 
 \subsection{Membranous Labyrinth}
-The creation of the membranous labyrinth began by creating a copy of the bony labyrinth, shrunk by a fraction to create two volumes, one enclosed within the other. The precise structure of the utricle and saccule is not concretely known due to their small size and thin membranous structure, creating high potential for damage in histological studies and difficulty in imaging for even $\mu$MRI technologies. The utricle was modeled as a slightly shrunken version of the portion of the surrounding bony labyrinth anterior to the cupulas. Cupulas structures are based off of the work conducted by Dr. Rabbitt in “Semicircular canal biomechanics in health and disease” published in 2019. \cite{rabbitt} They are modeled as stretched cones spanning the majority of the cupula of each SCC, formed by the inner boundary of the membranous labyrinth. Later application of material properties will allow the cupulas to flex as they would in test subjects and deflection to be accurately tracked determining vestibular response.
+The creation of the membranous labyrinth began by creating a copy of the bony labyrinth, shrunk by a fraction to create two volumes, one enclosed within the other. The precise structure of the utricle and saccule is not concretely known due to their small size and thin membranous structure, creating high potential for damage in histological studies and difficulty in imaging for even $\mu$MRI technologies. The utricle was modeled as a slightly shrunken version of the portion of the surrounding bony labyrinth anterior to the cupulas. Cupulas structures are based off of the work conducted by Dr. Rabbitt in “Semicircular canal biomechanics in health and disease” published in 2019. \cite{rabbitt} They are modeled as spanning the majority of the cupula of each SCC.
 
 The membranous labyrinth of the vestibular system was not effectively isolated through segmentation alone. The cross-sectional area and position of the membranous labyrinth within the SCC’s was corrected using the values stated in Iversen, M. M., Rabbitt, R. D. (2017). \cite{iversen} This was accurately accomplished by referencing individual cross section in SolidWorks, placing them appropriately within the model of the bony labyrinth, and creating a thin layer element which dynamically connects each cross section.
 
@@ -202,6 +166,12 @@ Aside from the RWM, a density of 1000 kg/m3 was chosen for the soft tissues of t
 Edit this as the model is completed and material properties are applied
 
 
+\subsection{Meshing}
+
+
+\subsection{Boundary Conditions}
+The outer boundaries of the mechanical model lie at the division between the perilymphatic fluid of the inner ear and the bony labyrinth. This was modeled as fixed due to the relatively small amount of information available on chinchilla temporal bone material properties. Two types of fluid–structure interactions were defined in the acoustic elements of the cochlea and vestibular system. Each surface between the lymphatic fluid and a movable structure, such as the BM, RM and RWM, was defined in the model as a fluid-structure interface (FSI) where the acoustic pressure was coupled into structural analysis. (copied from Junfeng, will alter for final paper)
+
 \subsection{Finite Element Analysis}
 -This whole section will need to be reworked
 \subsubsection{Analysis of Vestibulocochlear Function}
@@ -223,6 +193,8 @@ This model was tested using FE analysis to validate geometry and material proper
 
 Figure \ref{wm} denotes the locations of the round and oval window membranes. By assigning different material properties and conditions to these regions proper acoustic and vestibular testing can be conducted, as was done in preliminary testing.
 
+
+
 \subsection{FE Analysis}
 NEED \newline - Graph from FE analysis like seen in Junfengs paper
 - Maybe a figure showing the allocation of material properties by color
@@ -240,6 +212,20 @@ Geometric accuracy of the vestibular system and cochlea will allow for studies i
 
 Some features that are important for vestibulocochlear function have been omitted and their inclusion could improve results in the future. These include the finer details of the organ of corti, and the ductus cochlearis as well as the tectorial membrane and reticular lamina. These features would allow for more accurate analysis of the mechanics of the basiliar membrane. Another valuable addition would be a feedback system involving a seperate finite element model of a sensory hair cell. This would allow for analysis of the micromechanics of the inner ear and increase the accuracy of data of future studies into hearing and balance. \cite{choi}
 
+ Because the saccule is linked to the cochlear duct, propagation of waves due to angular motion of the SCC’s can cause perturbations of the base of the cochlea resulting in sensible alterations in hearing, with intense noises capable of producing a similar effect in the vestibular system. For this reason, it is vital that the membranous labyrinth be modeled in its entirety, linking the saccule and the ductus cochlearis with the canalus reuniens and allowing for analysis of their effects on one another.
+   
+   The greatest effect of each system on the other can be predictably seen at the base of the cochlea and the utricular and saccular vestibules as they are the closest in proximity to one another.  Studies with rodents have confirmed this effect \cite{mizrachi}
+   
+   Testing on humans is not feasible due to the necessity for certain procedures, including electrical stimulation, which would be unethical to perform on human test subjects. Another alternative which would perhaps allow more easily transferable data would be primates however, due to limited resources coupled with this projects early stage in research, it is difficult and unethical to subject them to invasive procedures which are often easier to carry out on rodents.
+
+This study features a finite element model constructed by coregistering $\mu$CT and $\mu$MRI scans of the chinchilla bulla. The chinchilla was chosen as the basis for this FE model as it is widely accepted as one of the closest analogs to the human inner ear due to its similar number of turns in the cochlea, structure of semicircular canals, and singular primary crista. \cite{trevino:chinchmodel} The chinchilla is perhaps a better candidate than other rodents, especially microtype varieties, as evidenced in figure \ref{response2} which shows the cochlear response of a variety of rodents and is easily compared to figure \ref{response} displaying human and chinchilla cochlear response. Only the gerbil and chinchilla exhibit the desired response and range from and in frequency. \cite{mason}
+- shorten, maybe combine this with limitations section and rename
+
+what would I add
+- nerves for electrical simulation
+- temporal bone thickness and material properties
+- attach middle and outer ear model already completed
+   
 \section{Acknowledgment}
 This work is supported by .... (Dr. Dai, OU, more?)
 
